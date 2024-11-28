@@ -1,0 +1,30 @@
+services:
+
+  web:   
+    image: odoo:17
+    depends_on:
+        - db
+    ports:
+      - 8069:8069
+    volumes:
+      - ./volumesOdoo/addons:/mnt/extra-addons
+    user: root 
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+    secrets:
+      - odoo_db_password
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - POSTGRES_DB=postgres  
+    volumes:
+      - ./volumesOdoo/dataPostgreSQL:/var/lib/postgresql/data
+  
+  secrets:
+  odoo_db_password:
+    external: true
