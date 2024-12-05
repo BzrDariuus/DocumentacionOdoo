@@ -12,19 +12,23 @@ services:
     environment:
       - HOST=db
       - USER=odoo
-      - PASSWORD=odoo
+      - PASSWORD_FILE=Secrets/odoo_db_password
     secrets:
       - odoo_db_password
 
   db:
     image: postgres:15
     environment:
-      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_PASSWORD=Secrets/postgres_password
       - POSTGRES_USER=odoo
-      - POSTGRES_DB=postgres  
+      - POSTGRES_DB=postgres
+    secrets:
+      - postgres_password  
     volumes:
       - ./volumesOdoo/dataPostgreSQL:/var/lib/postgresql/data
   
   secrets:
   odoo_db_password:
-    external: true
+    file: Secrets/odoo_db_password.txt
+  postgres_password:
+    file: Secrets/postgres_password.txt
